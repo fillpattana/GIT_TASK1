@@ -1,16 +1,57 @@
-# This is a sample Python script.
+class Transportation(object):
+    """Abstract base class"""
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+    def __init__(self, start, end, distance):
+        if self.__class__ == Transportation:
+            raise NotImplementedError
+        self.start = start
+        self.end = end
+        self.distance = distance
+
+    def find_cost(self):
+        """Abstract method; derived classes must override"""
+        raise NotImplementedError
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+class Walk(Transportation):
+
+    def __init__(self, start, end, distance):
+        Transportation.__init__(self, start, end, distance)
+
+    def find_cost(self):
+        return 0
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCm')
+class Taxi (Transportation):
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    def __init__(self, start, end, distance):
+        Transportation.__init__(self, start, end, distance)
+
+    def find_cost(self):
+        return 40 * self.distance
+
+
+class Train (Transportation):
+
+    def __init__(self, start, end, distance, station):
+        Transportation.__init__(self, start, end, distance)
+        self.station = station
+
+    def find_cost(self):
+        return 5 * self.station
+# main program
+
+
+travel_cost = 0
+
+trip = [
+    Walk("KMITL", "KMITL SCB Bank", 0.6),
+    Taxi("KMITL SCB Bank", "Ladkrabang Station", 5),
+    Train("Ladkrabang Station", "Payathai Station", 40, 6),
+    Taxi("Payathai Station", "The British Council", 3)
+]
+
+for travel in trip:
+    travel_cost += travel.find_cost()
+
+print(travel_cost)
